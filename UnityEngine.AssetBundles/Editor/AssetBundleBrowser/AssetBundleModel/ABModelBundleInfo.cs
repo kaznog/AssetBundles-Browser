@@ -350,10 +350,10 @@ namespace UnityEngine.AssetBundles.AssetBundleModel
                             m_ConcreteAssets.Add(folderAsset);
                         }
                         
-                        AssetInfo addInfo = Model.CreateAsset(assetName, folderAsset);
-                        if (addInfo != null)
+                        AssetInfo addAssetInfo = Model.CreateAsset(assetName, folderAsset);
+                        if (addAssetInfo != null)
                         {
-                            m_DependentAssets.Add(Model.CreateAsset(assetName, folderAsset));
+                            m_DependentAssets.Add(addAssetInfo);
                             m_TotalSize += m_DependentAssets.Last().fileSize;
                         }
                     }
