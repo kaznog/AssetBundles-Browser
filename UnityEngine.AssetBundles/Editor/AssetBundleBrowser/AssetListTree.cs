@@ -159,10 +159,16 @@ namespace UnityEngine.AssetBundles
                     }
                     break;
                 case 1:
-                    DefaultGUI.Label(cellRect, item.asset.bundleName, args.selected, args.focused);
+                    if (item.asset != null)
+                        DefaultGUI.Label(cellRect, item.asset.bundleName, args.selected, args.focused);
+                    else
+                        DefaultGUI.Label(cellRect, "failedBundle", args.selected, args.focused);
                     break;
                 case 2:
-                    DefaultGUI.Label(cellRect, item.asset.GetSizeString(), args.selected, args.focused);
+                    if (item.asset != null)
+                        DefaultGUI.Label(cellRect, item.asset.GetSizeString(), args.selected, args.focused);
+                    else
+                        DefaultGUI.Label(cellRect, "0", args.selected, args.focused);
                     break;
                 case 3:
                     var icon = item.MessageIcon();
@@ -194,7 +200,7 @@ namespace UnityEngine.AssetBundles
             foreach (var id in selectedIds)
             {
                 var assetItem = FindItem(id, rootItem) as AssetBundleModel.AssetTreeItem;
-                if (assetItem != null)
+                if (assetItem != null && assetItem.asset != null)
                 {
                     Object o = AssetDatabase.LoadAssetAtPath<Object>(assetItem.asset.fullAssetName);
                     selectedObjects.Add(o);
@@ -226,7 +232,7 @@ namespace UnityEngine.AssetBundles
             DragAndDrop.SetGenericData("AssetListTreeSource", this);
             DragAndDrop.StartDrag("AssetListTree");
         }
-        
+
         protected override DragAndDropVisualMode HandleDragAndDrop(DragAndDropArgs args)
         {
             if(IsValidDragDrop(args))
@@ -301,7 +307,8 @@ namespace UnityEngine.AssetBundles
 
         protected override void ContextClickedItem(int id)
         {
-            if (AssetBundleModel.Model.DataSource.IsReadOnly ()) {
+            if (AssetBundleModel.Model.DataSource.IsReadOnly ())
+            {
                 return;
             }
 
